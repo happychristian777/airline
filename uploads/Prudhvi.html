@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+
+	<title> DOG</title>
+	<style>
+	
+			body{
+			margin: 0;
+			border: 2px solid black;
+			}
+			
+	</style>
+
+</head>	
+
+<body>
+
+<canvas id="canvas"></canvas>
+	<div class="buttonPanel">
+		<button id="toggleAnimation">Begin Animation</button>
+		<button id="clearScreen">Clear Screen</button>
+	</div>
+	
+<canvas id='DOG'></canvas>
+
+
+<script>
+
+
+
+			
+		var coordinates = {
+			dots: [ {x:7,y:217},{x:91,y:133},{x:91,y:110},{x:91,y:91},{x:133,y:133},{x:133,y:110},{x:133,y:91},{x:175,y:133},
+					{x:175,y:161},{x:175,y:189},{x:175,y:217},{x:203,y:217},{x:231,y:217},{x:259,y:217},{x:287,y:217},{x:315,y:217},
+					{x:343,y:217},{x:385,y:259},{x:427,y:343},{x:385,y:301},{x:385,y:323},{x:385,y:343},
+					{x:343,y:427},{x:323,y:427},{x:301,y:427}, {x:343,y:343},
+					{x:301,y:301},{x:259,y:427},{x:240,y:427},{x:217,y:427},{x:259,y:343},{x:231,y:343},{x:203,y:343},
+					{x:175,y:343},{x:133,y:427},{x:110,y:427},{x:91,y:427},{x:133,y:343},{x:110,y:343},{x:91,y:343},
+					{x:49,y:427},{x:25,y:427},{x:7,y:427},
+					{x:91,y:301},{x:91,y:273},{x:91,y:245},{x:91,y:217},{x:63,y:217},{x:35,y:217}]
+					
+		};
+		console.log(coordinates.dots[0].x);
+		console.log(coordinates.dots.length);
+
+
+		var c = document.getElementById("DOG");
+			c.width=window.innerWidth;
+			c.height=window.innerHeight;
+			var ctx = c.getContext("2d");
+			
+		function dots_drawing() {	
+		
+			for (var i = 0; i < coordinates.dots.length; i++) {
+				ctx.beginPath();
+				ctx.arc(coordinates.dots[i].x,coordinates.dots[i].y, 7,0,2 * Math.PI);
+				ctx.stroke();
+				ctx.fillStyle= "black";
+				ctx.fill();
+				console.log(coordinates.dots[i].y);
+			}
+			
+		}
+		
+	var j=0;
+		function update(){
+		
+			var s = coordinates.dots[j];
+			var d;
+			
+			if (j==coordinates.dots.length -1){
+				d = coordinates.dots[0];
+			} else {
+				d = coordinates.dots [j+1];
+			}
+			
+				j = j+1;
+				if (j > coordinates.dots.length - 1){
+					clearInterval(internal);
+					console.log('game stop');
+				}
+				
+			// strokes
+			ctx.moveTo(s.x, s.y);
+			ctx.lineTo(d.x, d.y);
+			ctx.lineWidth=7;
+			var grd = ctx.createLinearGradient(0,0,170,0);
+			grd.addColorStop(0, "blue");
+			grd.addColorStop(0.5, "red");
+			grd.addColorStop(1, "yellow");
+			ctx.strokeStyle = grd;
+			ctx.stroke();
+		}
+		
+		internal = setInterval(update,30);
+		dots_drawing();
+		
+		
+
+			
+</script>	
+
+</body>
+</html>	

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'><link rel="stylesheet" href="./style.css">
+	<style>
+	.card {
+  border-bottom: 2px solid rgba(162, 162, 162, 0.5);
+}
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container" style="margin-top: -15px;">
+  <h1 class="text-center m-3">Book Flight</h1>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-8 col-lg-6">
+   <form method="post" action="<?php echo base_url();?>Admin/addBooking">
+        <div class="form-group">
+          <label for="productName">Passenger</label>
+          <select class="form-control" name="pasnum">
+          <?php foreach($passenger as $row) { ?>
+          <option value="Pasnum:<?php echo $row->pasnum?> Surname:<?php echo $row->surname?> Name:<?php echo $row->name?>" ><?php echo $row->surname?> <?php echo $row->name?></option>
+          <?php } ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productName">Flight</label>
+          <select class="form-control" name="flightnum">
+          <?php foreach($flight as $row) { ?>
+          <option value="Flightnum:<?php echo $row->flightnum?> Origin:<?php echo $row->origin?> Dest:<?php echo $row->dest ?> Arrival:<?php echo $row->arr_time ?> Departure:<?php echo $row->dep_time ?>" >Origin:<?php echo $row->origin?> Dest:<?php echo $row->dest ?> Arrival:<?php echo $row->arr_time ?> Departure:<?php echo $row->dep_time ?></option>
+          <?php } ?>
+          </select>
+        </div>
+        <button id="btnSubmit" type="submit" class="btn btn-primary">Book Flight</button>
+      </form>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-8 col-lg-6">
+      <hr>
+    </div>
+  </div>
+</div>
+</div>
+<!-- partial -->
+  <script  src="./script.js"></script>
+  <script>
+  var addProductFormEl = document.getElementById('addProductForm'),
+  productNameInputEl = document.getElementById('productName'),
+  productPriceInputEl = document.getElementById('productPrice'),
+  btnSubmitEl = document.getElementById('btnSubmit'),
+  productsEl = document.getElementById('products')
+
+var counter = (function() {
+  var count = 3
+
+  return {
+    increment: function() {
+      return count++
+    }
+  }
+})()
+
+function Product(name, price) {
+  this.id = +new Date()
+  this.name = name
+  this.price = price
+  this.count = counter.increment()
+}
+
+function UI() {}
+
+UI.prototype.addProduct = function(name, price) {
+  var product = new Product(name, price),
+    html = document.createElement('div')
+
+  html.id = product.id
+  html.className = 'card my-2 p-2'
+  html.innerHTML =
+    '<div class="card-title">Item &#8470; ' +
+    product.count +
+    '</br>ID: ' +
+    product.id +
+    '</div>' +
+    '<div class="form-group">' +
+    '<input type="text" class="form-control" value="' +
+    product.name +
+    '">' +
+    '</div>' +
+    '<div class="form-group">' +
+    '<input type="number" class="form-control" value="' +
+    product.price +
+    '">' +
+    '</div>' +
+    '<button class="btn btn-danger" data-id="' +
+    product.id +
+    '">Remove item &#8470; ' +
+    product.count +
+    '</button>'
+
+  productsEl.insertBefore(html, productsEl.childNodes[0])
+}
+
+UI.prototype.clearFormFields = function() {
+  productNameInputEl.value = ''
+  productPriceInputEl.value = ''
+  productNameInputEl.focus()
+}
+
+UI.prototype.deleteProduct = function(id) {
+  document.getElementById(id).remove()
+}
+
+
+addProductFormEl.addEventListener('submit', function(e) {
+  e.preventDefault()
+
+  var name = productNameInputEl.value,
+    price = productPriceInputEl.value
+
+  if (!name || !price) {
+    return false
+  }
+
+  var ui = new UI()
+  ui.addProduct(name, price)
+  ui.clearFormFields()
+})
+
+productsEl.addEventListener('click', function(e) {
+  e.preventDefault()
+  if (e.target.className === 'btn btn-danger') {
+    var ui = new UI()
+    ui.deleteProduct(e.target.getAttribute('data-id'))
+  }
+})
+  </script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
+</body>
+</html>
